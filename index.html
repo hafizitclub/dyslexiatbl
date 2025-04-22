@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Scratch and Reveal Quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    td, th {
+      border: 1px solid #ccc;
+      padding: 15px;
+      text-align: left;
+      vertical-align: top;
+    }
+    .scratch-container {
+      position: relative;
+      width: 60px;
+      height: 60px;
+      margin: auto;
+    }
+    .under-star {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      font-size: 30px;
+      line-height: 60px;
+      z-index: 1;
+    }
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 2;
+      border-radius: 5px;
+    }
+    .question {
+      display: none;
+    }
+    .question.active {
+      display: block;
+    }
+    .nav-button {
+      display: inline-block;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="question active">
+    <h3>1) Dyslexia is primarily characterized by difficulties in which of the following areas?</h3>
+    <table>
+      <tr>
+        <td>a) Reading fluency and decoding</td>
+        <td>b) Understanding complex mathematical equations</td>
+        <td>c) Expressing oneself clearly through spoken language</td>
+        <td>d) Recognizing different musical instruments</td>
+      </tr>
+      <tr>
+        <td>
+          <div class="scratch-container">
+            <div class="under-star">😊</div>
+            <canvas width="60" height="60"></canvas>
+          </div>
+        </td>
+        <td>
+          <div class="scratch-container">
+            <div class="under-star"></div>
+            <canvas width="60" height="60"></canvas>
+          </div>
+        </td>
+        <td>
+          <div class="scratch-container">
+            <div class="under-star"></div>
+            <canvas width="60" height="60"></canvas>
+          </div>
+        </td>
+        <td>
+          <div class="scratch-container">
+            <div class="under-star"></div>
+            <canvas width="60" height="60"></canvas>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="question">
+    <h3>2) Which of the following is a common misconception about dyslexia?</h3>
+    <table>
+      <tr>
+        <td>a) It is a neurological condition.</td>
+        <td>b) It can affect individuals with above-average intelligence.</td>
+        <td>c) Early intervention can be beneficial.</td>
+        <td>d) It is caused by a lack of effort or low intelligence.</td>
+      </tr>
+      <tr>
+        <td>
+          <div class="scratch-container">
+            <div class="under-star"></div>
+            <canvas width="60" height="60"></canvas>
+          </div>
+        </td>
+        <td>
+          <div class="scratch-container">
+            <div class="under-star"></div>
+            <canvas width="60" height="60"></canvas>
+          </div>
+        </td>
+        <td>
+          <div class="scratch-container">
+            <div class="under-star"></div>
+            <canvas width="60" height="60"></canvas>
+          </div>
+        </td>
+        <td>
+          <div class="scratch-container">
+            <div class="under-star">😊</div>
+            <canvas width="60" height="60"></canvas>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="question">
+    <h3>3) What is a widely recommended instructional approach for individuals with dyslexia?</h3>
+    <table>
+      <tr>
+        <td>a) Primarily focusing on rote memorization of text.</td>
+        <td>b) Discouraging the use of assistive technologies.</td>
+        <td>c) Multi-sensory teaching methods.</td>
+        <td>d) Emphasizing speed and accuracy in timed reading tasks from the beginning.</td>
+      </tr>
+      <tr>
+        <td>
+          <div class="scratch-container">
+            <div class="under-star"></div>
+            <canvas width="60" height="60"></canvas>
+          </div>
+        </td>
+        <td>
+          <div class="scratch-container">
+            <div class="under-star"></div>
+            <canvas width="60" height="60"></canvas>
+          </div>
+        </td>
+        <td>
+          <div class="scratch-container">
+            <div class="under-star">😊</div>
+            <canvas width="60" height="60"></canvas>
+          </div>
+        </td>
+        <td>
+          <div class="scratch-container">
+            <div class="under-star"></div>
+            <canvas width="60" height="60"></canvas>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <button class="nav-button" onclick="nextQuestion()">➡️ Next</button>
+
+  <script>
+    const questions = document.querySelectorAll('.question');
+    let current = 0;
+
+    function nextQuestion() {
+      questions[current].classList.remove('active');
+      current = (current + 1) % questions.length;
+      questions[current].classList.add('active');
+    }
+
+    document.querySelectorAll("canvas").forEach(canvas => {
+      const ctx = canvas.getContext("2d");
+      ctx.fillStyle = "#888";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      canvas.addEventListener("mousemove", e => {
+        const rect = canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.beginPath();
+        ctx.arc(x, y, 8, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      canvas.addEventListener("touchmove", e => {
+        e.preventDefault();
+        const rect = canvas.getBoundingClientRect();
+        const x = e.touches[0].clientX - rect.left;
+        const y = e.touches[0].clientY - rect.top;
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.beginPath();
+        ctx.arc(x, y, 8, 0, Math.PI * 2);
+        ctx.fill();
+      }, { passive: false });
+    });
+  </script>
+</body>
+</html>
+
